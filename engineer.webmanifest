@@ -1,0 +1,17 @@
+{
+  "name": "Chinchani Engineer Board",
+  "short_name": "CHN-01 Engineer",
+  "start_url": "./engineer.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B0E13",
+  "theme_color": "#0B0E13",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0E13'/%3E%3Crect x='10' y='14' width='44' height='8' fill='%232FBE7E'/%3E%3Crect x='10' y='28' width='44' height='8' fill='%232FBE7E'/%3E%3Crect x='10' y='42' width='28' height='8' fill='%232FBE7E'/%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

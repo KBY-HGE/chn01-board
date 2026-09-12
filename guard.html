@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E13">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CHN-01 Guard">
+<meta name="robots" content="noindex, nofollow">
+<title>Chinchani Guard Board</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0E13'/%3E%3Crect x='10' y='14' width='44' height='8' fill='%23FFB020'/%3E%3Crect x='10' y='28' width='44' height='8' fill='%23FFB020'/%3E%3Crect x='10' y='42' width='28' height='8' fill='%23FFB020'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0E13'/%3E%3Crect x='10' y='14' width='44' height='8' fill='%23FFB020'/%3E%3Crect x='10' y='28' width='44' height='8' fill='%23FFB020'/%3E%3Crect x='10' y='42' width='28' height='8' fill='%23FFB020'/%3E%3C/svg%3E">
+<link rel="manifest" href="guard.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Roboto+Mono:wght@700&display=swap">
+<style>
+/* Dark on purpose: this is a night-shift tool. A white screen at 2am costs
+   the man the eyes he needs for the next twenty minutes of walking. */
+:root{
+  color-scheme: dark;
+  --ink:#0B0E13; --surface:#151A22; --surface-2:#1C232D; --line:#2A333F;
+  --text:#E8EDF3; --dim:#8B97A6;
+  --accent:#FFB020; --accent-ink:#16110A;
+  --red:#FF5C47; --red-soft:#2A1512;
+  --sans:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --mono:'Roboto Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{background:var(--ink)}
+body{margin:0; background:var(--ink); color:var(--text);
+  font-family:var(--sans); font-size:16px; line-height:1.4;
+  -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent}
+.page{max-width:480px; margin:0 auto; padding-block:14px 40px;
+  padding-left:16px; padding-right:16px;
+  display:flex; flex-direction:column; gap:18px}
+
+.top{display:flex; align-items:baseline; justify-content:space-between; gap:10px}
+.top .role{font-size:11px; font-weight:800; letter-spacing:.16em;
+  color:var(--accent); text-transform:uppercase}
+.top h1{margin:2px 0 0; font-size:23px; font-weight:800; letter-spacing:-.02em;
+  text-wrap:balance}
+.top .site{font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--dim);
+  text-align:right; line-height:1.5; flex:0 0 auto}
+
+.calls{display:grid; gap:7px;
+  grid-template-columns:repeat(auto-fit,minmax(104px,1fr))}
+.call{display:flex; flex-direction:column; gap:1px; background:var(--surface);
+  border:1px solid var(--line); padding:9px 12px; text-decoration:none;
+  color:var(--text); min-width:0}
+.call .w{font-size:9.5px; font-weight:800; letter-spacing:.11em; color:var(--dim);
+  text-transform:uppercase}
+.call .n{font-size:14px; font-weight:700; font-variant-numeric:tabular-nums;
+  overflow-wrap:anywhere}
+.call.urgent{background:var(--red-soft); border-color:var(--red)}
+.call.urgent .w{color:var(--red)}
+.call.unset{opacity:.45}
+.call.unset .n{color:var(--dim); font-weight:600}
+
+h2{margin:0; font-size:11px; font-weight:800; letter-spacing:.16em;
+  color:var(--dim); text-transform:uppercase}
+section{display:flex; flex-direction:column; gap:9px}
+
+.act{display:flex; align-items:center; gap:13px; min-height:70px;
+  background:var(--surface); border:1px solid var(--line);
+  border-left:5px solid var(--accent); padding:11px 13px;
+  text-decoration:none; color:var(--text)}
+.act:active{background:var(--surface-2)}
+.act .body{min-width:0; flex:1}
+.act .lab{font-size:17px; font-weight:800; line-height:1.2; text-wrap:balance}
+.act .sub{font-size:12.5px; color:var(--dim); margin-top:2px}
+.act .go{flex:0 0 auto; color:var(--accent); font-size:20px; font-weight:800}
+.act.danger{border-left-color:var(--red)}
+.act.danger .lab,.act.danger .go{color:var(--red)}
+.act[data-unset="1"]{opacity:.4; pointer-events:none}
+.act[data-unset="1"] .sub{color:var(--accent)}
+
+.rounds{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.rd{display:flex; flex-direction:column; align-items:center; gap:2px;
+  background:var(--surface); border:1px solid var(--line);
+  border-top:4px solid var(--accent); padding:11px 4px 9px;
+  text-decoration:none; color:var(--text)}
+.rd:active{background:var(--surface-2)}
+.rd .num{font-family:var(--mono); font-size:30px; font-weight:700; line-height:1;
+  color:var(--accent)}
+.rd .plate{font-size:11px; font-weight:800; letter-spacing:.03em}
+.rd .cap{font-size:9px; color:var(--dim); letter-spacing:.08em;
+  text-transform:uppercase}
+.rd[data-unset="1"]{opacity:.4; pointer-events:none}
+
+.rule{border:1px solid var(--accent); border-left:5px solid var(--accent);
+  background:var(--surface); padding:11px 13px}
+.rule .t{font-size:14.5px; font-weight:800; color:var(--accent); line-height:1.25}
+.rule .b{font-size:13px; color:var(--dim); margin-top:3px}
+.rule.stop{border-color:var(--red); border-left-color:var(--red);
+  background:var(--red-soft)}
+.rule.stop .t{color:var(--red)}
+
+.hint{font-size:12px; color:var(--dim); border-top:1px solid var(--line);
+  padding-top:12px; line-height:1.5}
+.hint b{color:var(--text)}
+.hint a{color:var(--accent)}
+
+.gear{align-self:center; background:none; border:1px solid var(--line);
+  color:var(--dim); font-family:var(--sans); font-size:11px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; padding:9px 18px;
+  cursor:pointer}
+.setup{display:flex; flex-direction:column; gap:12px;
+  border:1px solid var(--accent); padding:14px; background:var(--surface)}
+.setup h3{margin:0; font-size:15px; font-weight:800}
+.setup p{margin:0; font-size:12.5px; color:var(--dim); line-height:1.5}
+.setup p b{color:var(--text)}
+.setup label{display:flex; flex-direction:column; gap:4px; font-size:11px;
+  font-weight:800; letter-spacing:.08em; color:var(--dim); text-transform:uppercase}
+.setup input,.setup textarea{font-family:var(--mono); font-size:12px;
+  background:var(--ink); color:var(--text); border:1px solid var(--line);
+  padding:9px 10px; width:100%}
+.setup textarea{min-height:108px; resize:vertical; line-height:1.45}
+.setup input:focus,.setup textarea:focus{outline:2px solid var(--accent);
+  outline-offset:1px}
+.fields{display:flex; flex-direction:column; gap:10px}
+.row{display:flex; gap:8px; flex-wrap:wrap}
+.btn{flex:1 1 auto; min-width:130px; background:var(--accent);
+  color:var(--accent-ink); border:none; font-family:var(--sans);
+  font-size:14px; font-weight:800; padding:12px 14px; cursor:pointer}
+.btn.ghost{background:none; color:var(--text); border:1px solid var(--line)}
+.msg{font-size:12.5px; line-height:1.45}
+.msg.ok{color:var(--accent)}
+.msg.bad{color:var(--red)}
+.src{font-size:10.5px; color:var(--dim); letter-spacing:.06em;
+  text-transform:uppercase}
+@media (prefers-reduced-motion:no-preference){
+  .act,.rd,.call{transition:background .12s ease}
+}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="top">
+      <div>
+        <div class="role">Security guard</div>
+        <h1>What to send, and when</h1>
+      </div>
+      <div class="site">CHN-01<br>CHINCHANI</div>
+    </div>
+
+    <section>
+      <h2>Call first, then fill the form</h2>
+      <div class="calls" id="calls"></div>
+    </section>
+
+      <section>
+        <h2>Coming on and going off</h2>
+      <a class="act" data-act="shift" data-when="When you arrive, and when you leave">
+        <div class="body"><div class="lab">Shift in / out</div><div class="sub">Link not added yet</div></div>
+        <div class="go">&rsaquo;</div>
+      </a>
+      </section>
+
+      <section>
+        <h2>Six rounds a shift</h2>
+      <div class="rounds" id="rounds"></div>
+      <a class="act" data-act="round" data-when="If the round buttons above are not set">
+        <div class="body"><div class="lab">Patrol round</div><div class="sub">Link not added yet</div></div>
+        <div class="go">&rsaquo;</div>
+      </a>
+      </section>
+
+      <section>
+        <h2>At the gate</h2>
+      <a class="act" data-act="gate" data-when="Every person, every vehicle, both ways">
+        <div class="body"><div class="lab">Gate log</div><div class="sub">Link not added yet</div></div>
+        <div class="go">&rsaquo;</div>
+      </a>
+      </section>
+
+      <section>
+        <h2>Something is wrong</h2>
+      <a class="act danger" data-act="issue" data-when="RED — telephone first, then fill this">
+        <div class="body"><div class="lab">Raise an issue</div><div class="sub">Link not added yet</div></div>
+        <div class="go">&rsaquo;</div>
+      </a>
+      </section>
+
+    <div class="rule stop">
+      <div class="t">No green page means it did not save.</div>
+      <div class="b">After you press Submit, wait for the screen that says
+        <b>Saved</b>. If you still see the questions, send it again.</div>
+    </div>
+
+    <div class="rule">
+      <div class="t">Send the round standing at the plate.</div>
+      <div class="b">Google records the minute you press Submit. Wait 20 minutes between rounds — the walk takes 23.</div>
+    </div>
+
+    <div class="hint">
+      <b>Keep this on your home screen.</b> Open the browser menu and choose
+      <b>Add to Home screen</b>. It will sit with your other apps.
+      Stay signed in to Google or the photo boxes will not work.
+      <div class="src" id="src" style="margin-top:8px"></div>
+    </div>
+
+    <button class="gear" id="gear" type="button">Setup</button>
+
+    <div class="setup" id="setup" hidden>
+      <h3>Put the links in</h3>
+      <p>Open the register, copy the whole <b>Links</b> tab and paste it below,
+        then press <b>Read the paste</b>. Check what it found, press
+        <b>Make links.json</b>, and save that file in the repo beside these
+        pages. One file feeds both the guard and the engineer page.</p>
+      <label>Paste the Links tab here
+        <textarea id="bulk" placeholder="CHN-01 Patrol Round&#9;https://docs.google.com/forms/..."></textarea>
+      </label>
+      <div class="row">
+        <button class="btn" id="parse" type="button">Read the paste</button>
+        <button class="btn ghost" id="toggleFields" type="button">Type by hand</button>
+      </div>
+      <div class="fields" id="fields" hidden></div>
+      <div class="row">
+        <button class="btn" id="make" type="button">Make links.json</button>
+        <button class="btn ghost" id="tryhere" type="button">Test on this phone</button>
+      </div>
+      <textarea id="out" hidden readonly aria-label="links.json"></textarea>
+      <div class="row">
+        <button class="btn" id="copy" type="button" hidden>Copy links.json</button>
+        <button class="btn ghost" id="clearhere" type="button">Clear the test</button>
+      </div>
+      <div class="msg" id="msg"></div>
+    </div>
+
+  </div>
+<script>
+(function () {
+  "use strict";
+
+  var ALL_ACTIONS = [{"key": "shift", "label": "Shift in / out", "when": "When you arrive, and when you leave", "match": ["shift"]}, {"key": "round", "label": "Patrol round", "when": "If the round buttons above are not set", "match": ["patrol"]}, {"key": "gate", "label": "Gate log", "when": "Every person, every vehicle, both ways", "match": ["gate"]}, {"key": "gen", "label": "Daily generation", "when": "After dark, 7pm to 8:30pm", "match": ["generation"]}, {"key": "clean", "label": "Module cleaning", "when": "Evening, 5pm to 9pm \u2014 soft cloth only", "match": ["cleaning"]}, {"key": "grass", "label": "Grass cutting", "when": "Morning, 7am to 11am", "match": ["grass"]}, {"key": "pm", "label": "Preventive maintenance", "when": "One item a day, including Sunday", "match": ["preventive"]}, {"key": "close", "label": "Close an issue", "when": "When the work is finished, not when ordered", "match": ["close"]}, {"key": "issue", "label": "Raise an issue", "danger": true, "when": "RED \u2014 telephone first, then fill this", "match": ["issue"]}];
+  var SHOWN       = ["shift", "round", "gate", "issue"];
+  var ROUNDS      = [{"n": 1, "plate": "INV-6"}, {"n": 2, "plate": "BLK-A3"}, {"n": 3, "plate": "INV-2"}, {"n": 4, "plate": "PUMP-1"}, {"n": 5, "plate": "INV-4"}, {"n": 6, "plate": "STORE-1"}];
+  var PHONES      = [{"key": "eng", "who": "Site engineer", "urgent": false}, {"key": "csto", "who": "Koby (CSTO)", "urgent": false}, {"key": "md", "who": "MD", "urgent": false}, {"key": "hescom", "who": "HESCOM fault", "urgent": true}, {"key": "amb", "who": "Ambulance 108", "urgent": true}];
+  var SHOW_ROUNDS = true;
+
+  var LS = "chn01.links";
+  var cfg = { links: {}, rounds: {}, phones: {} };
+  var source = "nothing yet";
+
+  function el(t, c, x) {
+    var n = document.createElement(t);
+    if (c) n.className = c;
+    if (x != null) n.textContent = x;
+    return n;
+  }
+  function norm(d) {
+    return { links: (d && d.links) || {}, rounds: (d && d.rounds) || {},
+             phones: (d && d.phones) || {} };
+  }
+
+  /* ---- render ---------------------------------------------------- */
+  function renderCalls() {
+    var box = document.getElementById("calls");
+    box.textContent = "";
+    PHONES.forEach(function (p) {
+      var num = cfg.phones[p.key] || "";
+      var a = el("a", "call" + (p.urgent ? " urgent" : "") + (num ? "" : " unset"));
+      if (num) { a.href = "tel:" + num.replace(/[^+0-9]/g, ""); }
+      else { a.setAttribute("aria-disabled", "true"); }
+      a.appendChild(el("span", "w", p.who));
+      a.appendChild(el("span", "n", num || "not added"));
+      box.appendChild(a);
+    });
+  }
+  function renderActions() {
+    Array.prototype.forEach.call(
+      document.querySelectorAll("[data-act]"), function (a) {
+        var url = cfg.links[a.getAttribute("data-act")] || "";
+        var sub = a.querySelector(".sub");
+        if (url) {
+          a.href = url; a.target = "_blank"; a.rel = "noopener";
+          a.removeAttribute("data-unset");
+          sub.textContent = a.getAttribute("data-when");
+        } else {
+          a.removeAttribute("href");
+          a.setAttribute("data-unset", "1");
+          sub.textContent = "Link not added yet";
+        }
+      });
+  }
+  function renderRounds() {
+    var box = document.getElementById("rounds");
+    if (!box) return;
+    box.textContent = "";
+    ROUNDS.forEach(function (r) {
+      var url = cfg.rounds[String(r.n)] || "";
+      var a = el("a", "rd");
+      if (url) { a.href = url; a.target = "_blank"; a.rel = "noopener"; }
+      else { a.setAttribute("data-unset", "1"); }
+      a.appendChild(el("span", "cap", "Round"));
+      a.appendChild(el("span", "num", String(r.n)));
+      a.appendChild(el("span", "plate", r.plate));
+      box.appendChild(a);
+    });
+  }
+  function renderAll() {
+    renderCalls(); renderActions(); renderRounds();
+    var s = document.getElementById("src");
+    if (s) s.textContent = "Links from: " + source;
+  }
+
+  /* ---- setup ------------------------------------------------------ */
+  function buildFields() {
+    var box = document.getElementById("fields");
+    if (box.childElementCount) return;
+    box.appendChild(el("p", null,
+      "Every form, including the ones the other page shows. One links.json " +
+      "feeds both."));
+    ALL_ACTIONS.forEach(function (a) {
+      var l = el("label", null, a.label);
+      var i = el("input");
+      i.id = "f_link_" + a.key; i.type = "url";
+      i.placeholder = "https://docs.google.com/forms/...";
+      i.value = cfg.links[a.key] || "";
+      l.appendChild(i); box.appendChild(l);
+    });
+    ROUNDS.forEach(function (r) {
+      var l = el("label", null, "Round " + r.n + " — " + r.plate);
+      var i = el("input");
+      i.id = "f_round_" + r.n; i.type = "url";
+      i.placeholder = "pre-filled round link";
+      i.value = cfg.rounds[String(r.n)] || "";
+      l.appendChild(i); box.appendChild(l);
+    });
+    PHONES.forEach(function (p) {
+      var l = el("label", null, p.who + " — phone");
+      var i = el("input");
+      i.id = "f_phone_" + p.key; i.type = "tel"; i.placeholder = "+91 ...";
+      i.value = cfg.phones[p.key] || "";
+      l.appendChild(i); box.appendChild(l);
+    });
+  }
+  function collect() {
+    var out = { links: {}, rounds: {}, phones: {} };
+    ALL_ACTIONS.forEach(function (a) {
+      var f = document.getElementById("f_link_" + a.key);
+      var v = f ? f.value.trim() : (cfg.links[a.key] || "");
+      if (v) out.links[a.key] = v;
+    });
+    ROUNDS.forEach(function (r) {
+      var f = document.getElementById("f_round_" + r.n);
+      var v = f ? f.value.trim() : (cfg.rounds[String(r.n)] || "");
+      if (v) out.rounds[String(r.n)] = v;
+    });
+    PHONES.forEach(function (p) {
+      var f = document.getElementById("f_phone_" + p.key);
+      var v = f ? f.value.trim() : (cfg.phones[p.key] || "");
+      if (v) out.phones[p.key] = v;
+    });
+    return out;
+  }
+
+  /* One URL per line; the line's own words say which form it is. Rounds
+     are tested first, because "Round 3" also contains "patrol". */
+  function parseBulk(text) {
+    var got = { links: 0, rounds: 0 };
+    text.split(/\r?\n/).forEach(function (line) {
+      var m = line.match(/https?:\/\/[^\s"'<>)\]]+/);
+      if (!m) return;
+      var url = m[0].replace(/[.,;]+$/, "");
+      var hay = line.toLowerCase();
+      var rd = hay.match(/round\s*([1-6])\b/);
+      if (rd) {
+        cfg.rounds[rd[1]] = url;
+        var fr = document.getElementById("f_round_" + rd[1]);
+        if (fr) fr.value = url;
+        got.rounds++;
+        return;
+      }
+      for (var i = 0; i < ALL_ACTIONS.length; i++) {
+        var a = ALL_ACTIONS[i];
+        var hit = a.match.every(function (w) { return hay.indexOf(w) !== -1; });
+        if (hit) {
+          cfg.links[a.key] = url;
+          var f = document.getElementById("f_link_" + a.key);
+          if (f) f.value = url;
+          got.links++;
+          return;
+        }
+      }
+    });
+    return got;
+  }
+  function say(t, good) {
+    var m = document.getElementById("msg");
+    m.className = "msg " + (good ? "ok" : "bad");
+    m.textContent = t;
+  }
+
+  document.getElementById("gear").addEventListener("click", function () {
+    var s = document.getElementById("setup");
+    s.hidden = !s.hidden;
+    if (!s.hidden) { buildFields(); s.scrollIntoView({ block: "start" }); }
+  });
+  document.getElementById("toggleFields").addEventListener("click", function () {
+    buildFields();
+    var f = document.getElementById("fields");
+    f.hidden = !f.hidden;
+  });
+  document.getElementById("parse").addEventListener("click", function () {
+    buildFields();
+    var n = parseBulk(document.getElementById("bulk").value);
+    renderAll();
+    document.getElementById("fields").hidden = false;
+    if (n.links || n.rounds) {
+      say("Found " + n.links + " form link(s) and " + n.rounds +
+          " round link(s). Check them, then make the file.", true);
+    } else {
+      say("No links found in that paste — fill the boxes by hand.", false);
+    }
+  });
+  document.getElementById("make").addEventListener("click", function () {
+    buildFields();
+    var out = document.getElementById("out");
+    out.value = JSON.stringify(collect(), null, 2);
+    out.hidden = false;
+    document.getElementById("copy").hidden = false;
+    out.select();
+    say("Copy this and save it as links.json in the repo. Both pages read it.",
+        true);
+  });
+  document.getElementById("copy").addEventListener("click", function () {
+    var out = document.getElementById("out");
+    out.select();
+    var done = false;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(out.value).then(function () {
+        say("Copied. Save it as links.json.", true);
+      }, function () { say("Could not copy — select it and copy by hand.", false); });
+      done = true;
+    }
+    if (!done) say("Select the text above and copy it.", false);
+  });
+  document.getElementById("tryhere").addEventListener("click", function () {
+    buildFields();
+    cfg = norm(collect());
+    try {
+      localStorage.setItem(LS, JSON.stringify(cfg));
+      source = "this phone only (test)";
+      renderAll();
+      say("Working on this phone only. Other phones still need links.json.", true);
+    } catch (e) {
+      source = "this phone only (not saved)";
+      renderAll();
+      say("Shown here, but this browser refused to remember it.", false);
+    }
+  });
+  document.getElementById("clearhere").addEventListener("click", function () {
+    try { localStorage.removeItem(LS); } catch (e) {}
+    say("Cleared. Reload to go back to links.json.", true);
+  });
+
+  /* ---- boot: render empty, then links.json, then any local test ---- */
+  renderAll();
+
+  fetch("links.json", { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d) return;
+      cfg = norm(d);
+      source = "links.json";
+      renderAll();
+    })
+    .catch(function () { /* opened as a file, or not published yet */ })
+    .then(function () {
+      try {
+        var raw = localStorage.getItem(LS);
+        if (raw) { cfg = norm(JSON.parse(raw)); source = "this phone only (test)"; renderAll(); }
+      } catch (e) {}
+    });
+})();
+</script>
+</body>
+</html>
