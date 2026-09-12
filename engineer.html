@@ -345,21 +345,21 @@ section{display:flex; flex-direction:column; gap:9px}
     });
   }
   function collect() {
+    /* Every key, every time — including the ones still blank. A file that
+       lists what is missing is worth more than a short file that hides it.
+       "" reads as "not set" wherever the page uses it. */
     var out = { links: {}, rounds: {}, phones: {} };
     ALL_ACTIONS.forEach(function (a) {
       var f = document.getElementById("f_link_" + a.key);
-      var v = f ? f.value.trim() : (cfg.links[a.key] || "");
-      if (v) out.links[a.key] = v;
+      out.links[a.key] = f ? f.value.trim() : (cfg.links[a.key] || "");
     });
     ROUNDS.forEach(function (r) {
       var f = document.getElementById("f_round_" + r.n);
-      var v = f ? f.value.trim() : (cfg.rounds[String(r.n)] || "");
-      if (v) out.rounds[String(r.n)] = v;
+      out.rounds[String(r.n)] = f ? f.value.trim() : (cfg.rounds[String(r.n)] || "");
     });
     PHONES.forEach(function (p) {
       var f = document.getElementById("f_phone_" + p.key);
-      var v = f ? f.value.trim() : (cfg.phones[p.key] || "");
-      if (v) out.phones[p.key] = v;
+      out.phones[p.key] = f ? f.value.trim() : (cfg.phones[p.key] || "");
     });
     return out;
   }
