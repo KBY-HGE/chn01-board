@@ -1,5 +1,28 @@
 {
-  "links": {},
-  "rounds": {},
-  "phones": {}
+  "links": {
+    "shift": "https://docs.google.com/forms/d/e/1FAIpQLSdjdnUB_aXHG_-GPwII8SPHI3B5iFu7ghCKwzZJPxepCuKrAw/viewform",
+    "round": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform",
+    "gate": "https://docs.google.com/forms/d/e/1FAIpQLScxB8hZwY2VXHUa6V-xlMPDV4jh5uqjPrFxEH3qmHgsNZ0i4w/viewform",
+    "gen": "https://docs.google.com/forms/d/e/1FAIpQLSdcSEjLj06uTxRdCwxoctuCzDCAPGEtwyVEzsTHh5PHE0C9nQ/viewform",
+    "clean": "https://docs.google.com/forms/d/e/1FAIpQLSf9J-TDyWYhN7xiI7AJ-I9WBJ6cjBlq3GZXVqXbe25FRgfnaQ/viewform",
+    "grass": "https://docs.google.com/forms/d/e/1FAIpQLSdYkKXHfZXF09JbU5ktz0sstXMhcJKddF6Pd_2ykbw19hZLfQ/viewform",
+    "pm": "https://docs.google.com/forms/d/e/1FAIpQLScXvf4Hge4SJEF3r_l4pW5-eQZZUiX8MgaoBcPPCKZmVuBqjg/viewform",
+    "close": "https://docs.google.com/forms/d/e/1FAIpQLScEsRT_MV4Ryw2lJSYLTzwCoV574gG3lTM0raha9qrtHUmP6A/viewform",
+    "issue": "https://docs.google.com/forms/d/e/1FAIpQLScrCB4zUyHQNAzLm1HOcTJeGkdgQPBPeZSfZUBQPZH7Wnwd7g/viewform"
+  },
+  "rounds": {
+    "1": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=1&entry.886371421=INV-6",
+    "2": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=2&entry.886371421=BLK-A3",
+    "3": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=3&entry.886371421=INV-2",
+    "4": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=4&entry.886371421=PUMP-1",
+    "5": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=5&entry.886371421=INV-4",
+    "6": "https://docs.google.com/forms/d/e/1FAIpQLSek6rJvPb9TKYgTAGs5eiVRb9Hn_bIE2b_CZ5HUft4I6TSVxg/viewform?usp=pp_url&entry.1548774591=6&entry.886371421=STORE-1"
+  },
+  "phones": {
+    "eng": "",
+    "csto": "",
+    "md": "",
+    "hescom": "1912",
+    "amb": "108"
+  }
 }
